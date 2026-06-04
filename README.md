@@ -104,6 +104,9 @@ python app.py
 ```
 Ouvrez ensuite `http://127.0.0.1:5000` dans votre navigateur.
 
+<img width="1919" height="918" alt="image" src="https://github.com/user-attachments/assets/e321b5c3-2b2c-4ec6-a511-d207e718cf4c" />
+
+
 ## Performances du Modèle
 
 Suite à l'évaluation du modèle sur 1000 patients continus (`python test/evaluation.py`), le système a atteint d'excellents résultats :
