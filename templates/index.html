@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Routage aux Urgences</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <span class="cross">+</span> IA Urgences
+            </div>
+            <h1>Système Intelligent de Routage</h1>
+            <p>Sélectionnez les symptômes du patient pour obtenir une recommandation de service.</p>
+        </header>
+
+        <main class="main-content">
+            <section class="symptoms-section">
+                <div class="search-bar-container">
+                    <input type="text" id="symptom-search" placeholder="Rechercher un symptôme..." autocomplete="off">
+                </div>
+                
+                <div class="symptoms-list" id="symptoms-container">
+                    <!-- Les symptômes seront injectés ici par JavaScript -->
+                    <div class="loader">Chargement des symptômes...</div>
+                </div>
+            </section>
+
+            <section class="action-section">
+                <div class="selected-count">
+                    <span id="count-value">0</span> symptôme(s) sélectionné(s)
+                </div>
+                <button id="predict-btn" class="btn-predict" disabled>
+                    Analyser et Recommander
+                </button>
+            </section>
+
+            <section class="result-section hidden" id="result-container">
+                <div class="result-card">
+                    <h3>Service Recommandé</h3>
+                    <div class="service-name" id="predicted-service">--</div>
+                    <button id="reset-btn" class="btn-reset">Nouveau Patient</button>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Ce système utilise un modèle d'Apprentissage par Renforcement Profond (DQN).</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

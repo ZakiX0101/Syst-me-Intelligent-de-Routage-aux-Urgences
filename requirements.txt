@@ -3,3 +3,5 @@ numpy
 gymnasium
 stable-baselines3
 scikit-learn
+flask
+flask-cors

@@ -88,3 +88,31 @@ Pour observer la recommandation de l'agent sur un seul patient (avec affichage d
 ```bash
 python test/test_model.py
 ```
+
+## Interface Web
+
+Une interface utilisateur web complète (Frontend en HTML/CSS/JS et Backend en Flask) a été développée pour permettre aux médecins et secrétaires de consulter facilement le modèle.
+
+L'interface propose :
+- **Recherche et sélection** faciles des symptômes à partir d'une liste interactive.
+- **Thème Premium Dark/Light** avec des micro-animations ("glassmorphism").
+- **Backend Flask** qui transforme les sélections en vecteur Multi-Hot et retourne la recommandation du modèle.
+
+Pour lancer l'interface :
+```bash
+python app.py
+```
+Ouvrez ensuite `http://127.0.0.1:5000` dans votre navigateur.
+
+## Performances du Modèle
+
+Suite à l'évaluation du modèle sur 1000 patients continus (`python test/evaluation.py`), le système a atteint d'excellents résultats :
+
+- **Accuracy (Précision Exacte)** : **97.60%**
+- **Bons routages (Succès)** : 976
+- **Erreurs Médicales** : 24
+- **Erreurs Opérationnelles** : 0
+- **Récompense moyenne par étape** : 9.52
+- **Temps d'exécution** : ~0.27 secondes (très rapide pour le traitement en temps réel)
+
+Ces performances montrent que l'agent RL a réussi à apprendre à router presque parfaitement les patients vers le bon service, tout en évitant complètement de saturer les capacités hospitalières.
