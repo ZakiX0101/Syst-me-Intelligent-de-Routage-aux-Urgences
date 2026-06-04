@@ -117,5 +117,7 @@ Suite à l'évaluation du modèle sur 1000 patients continus (`python test/evalu
 - **Erreurs Opérationnelles** : 0
 - **Récompense moyenne par étape** : 9.52
 - **Temps d'exécution** : ~0.27 secondes (très rapide pour le traitement en temps réel)
+  <img width="634" height="226" alt="image" src="https://github.com/user-attachments/assets/245f125e-a803-4e85-b16d-7e5af198ff69" />
+
 
 Ces performances montrent que l'agent RL a réussi à apprendre à router presque parfaitement les patients vers le bon service, tout en évitant complètement de saturer les capacités hospitalières.
