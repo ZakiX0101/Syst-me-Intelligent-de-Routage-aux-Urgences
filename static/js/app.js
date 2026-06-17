@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultContainer = document.getElementById('result-container');
     const predictedService = document.getElementById('predicted-service');
     const resetBtn = document.getElementById('reset-btn');
+    
+    // Nouveaux éléments pour les capacités
+    const capacitiesContainer = document.getElementById('capacities-container');
+    const dischargeBtn = document.getElementById('discharge-btn');
+    const saturationWarning = document.getElementById('saturation-warning');
 
     let allSymptoms = [];
     let selectedSymptoms = new Set();
@@ -25,6 +30,46 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erreur lors du chargement des symptômes:', error);
             symptomsContainer.innerHTML = '<div class="loader" style="color: #ff4444;">Erreur de chargement. Vérifiez que le serveur est lancé.</div>';
         }
+    }
+
+    // 1.5. Charger les capacités
+    async function loadCapacities() {
+        try {
+            const response = await fetch('/api/capacities');
+            if (!response.ok) throw new Error('Erreur réseau');
+            const data = await response.json();
+            
+            if (data.capacities) {
+                renderCapacities(data.capacities);
+            }
+        } catch (error) {
+            console.error('Erreur capacités:', error);
+            capacitiesContainer.innerHTML = '<div style="color:#ff4444; padding:1rem;">Erreur de chargement des capacités.</div>';
+        }
+    }
+
+    function renderCapacities(capacities) {
+        capacitiesContainer.innerHTML = '';
+        capacities.forEach(cap => {
+            const percent = (cap.current / cap.max) * 100;
+            let statusClass = '';
+            if (percent >= 100) statusClass = 'danger';
+            else if (percent >= 70) statusClass = 'warning';
+
+            const card = document.createElement('div');
+            card.className = `capacity-card ${statusClass}`;
+            card.innerHTML = `
+                <div class="capacity-name">${cap.service}</div>
+                <div class="capacity-bar-bg">
+                    <div class="capacity-bar-fill" style="width: ${Math.min(percent, 100)}%"></div>
+                </div>
+                <div class="capacity-stats">
+                    <span>${cap.current} / ${cap.max} lits</span>
+                    <span>${Math.min(Math.round(percent), 100)}%</span>
+                </div>
+            `;
+            capacitiesContainer.appendChild(card);
+        });
     }
 
     // 2. Afficher les symptômes
@@ -93,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         predictBtn.disabled = true;
         predictBtn.textContent = 'Analyse en cours...';
         resultContainer.classList.add('hidden');
+        saturationWarning.classList.add('hidden');
 
         try {
             const response = await fetch('/api/predict', {
@@ -110,7 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Afficher le résultat
             predictedService.textContent = data.service;
+            
+            if (data.is_saturated) {
+                saturationWarning.classList.remove('hidden');
+            }
+            
             resultContainer.classList.remove('hidden');
+            
+            // Rafraîchir les jauges de capacité
+            await loadCapacities();
             
             // Scroll au résultat
             resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -131,9 +185,26 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSymptoms(allSymptoms);
         searchInput.value = '';
         resultContainer.classList.add('hidden');
+        saturationWarning.classList.add('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 7. Simuler sorties
+    dischargeBtn.addEventListener('click', async () => {
+        dischargeBtn.disabled = true;
+        dischargeBtn.textContent = 'Libération...';
+        try {
+            await fetch('/api/discharge', { method: 'POST' });
+            await loadCapacities();
+        } catch(e) {
+            console.error(e);
+        } finally {
+            dischargeBtn.disabled = false;
+            dischargeBtn.textContent = 'Simuler des sorties';
+        }
     });
 
     // Init
     loadSymptoms();
+    loadCapacities();
 });

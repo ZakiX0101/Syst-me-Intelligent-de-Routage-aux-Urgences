@@ -85,7 +85,7 @@ class HospitalEnv(gym.Env):
         # Calcul de la récompense
         if is_saturated:
             # Erreur Opérationnelle : envoyer un patient vers un service plein
-            reward = -20.0
+            reward = -50.0
             # On rejette le patient dans ce service, la capacité n'augmente pas.
         elif not is_correct:
             # Erreur Médicale : mauvais service

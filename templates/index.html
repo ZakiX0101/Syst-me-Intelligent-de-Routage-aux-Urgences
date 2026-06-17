@@ -18,6 +18,16 @@
         </header>
 
         <main class="main-content">
+            <section class="capacities-section">
+                <div class="capacities-header">
+                    <h2>État des Services</h2>
+                    <button id="discharge-btn" class="btn-secondary">Simuler des sorties</button>
+                </div>
+                <div class="capacities-grid" id="capacities-container">
+                    <div class="loader">Chargement...</div>
+                </div>
+            </section>
+
             <section class="symptoms-section">
                 <div class="search-bar-container">
                     <input type="text" id="symptom-search" placeholder="Rechercher un symptôme..." autocomplete="off">
@@ -42,6 +52,7 @@
                 <div class="result-card">
                     <h3>Service Recommandé</h3>
                     <div class="service-name" id="predicted-service">--</div>
+                    <div id="saturation-warning" class="warning-msg hidden">Attention: Ce service était déjà saturé ! Pénalité appliquée au modèle.</div>
                     <button id="reset-btn" class="btn-reset">Nouveau Patient</button>
                 </div>
             </section>

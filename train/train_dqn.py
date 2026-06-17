@@ -1,8 +1,12 @@
 from stable_baselines3 import DQN
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.callbacks import CheckpointCallback
-from env.hospital_env import HospitalEnv
 import os
+import sys
+
+# Ajouter la racine du projet pour trouver le module 'env'
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from env.hospital_env import HospitalEnv
 
 # Dataset
 DATA_PATH = "data/DiseaseAndSymptoms_with_services.csv"
@@ -29,7 +33,7 @@ model = DQN(
 # Callbacks
 os.makedirs("models", exist_ok=True)
 checkpoint_callback = CheckpointCallback(
-    save_freq=10000, 
+    save_freq=100000, 
     save_path='./models/',
     name_prefix='rl_model'
 )
@@ -37,7 +41,7 @@ checkpoint_callback = CheckpointCallback(
 # Entraînement avec beaucoup plus d'étapes car l'espace d'états est plus complexe
 print("Début de l'entraînement...")
 model.learn(
-    total_timesteps=100000,
+    total_timesteps=1000000,
     callback=checkpoint_callback
 )
 
